@@ -356,8 +356,10 @@
         });
 
         function generateCalendarUrl() {
+            console.log('generateCalendarUrl called');
             const formData = new FormData(document.getElementById('calendarForm'));
             const data = Object.fromEntries(formData);
+            console.log('Form data:', data);
 
             // Validate dates
             const startDate = new Date(data.startDate);
@@ -412,6 +414,7 @@
             }
 
             // Display results
+            console.log('Generated URL:', googleUrl);
             displayResults(googleUrl, data);
         }
 
@@ -447,12 +450,18 @@
             // Generate QR code
             const qrContainer = document.getElementById('qrCode');
             qrContainer.innerHTML = '';
-            QRCode.toCanvas(qrContainer, googleUrl, {
-                width: 200,
-                margin: 2
-            }, function (error) {
-                if (error) console.error(error);
-            });
+            
+            if (typeof QRCode !== 'undefined') {
+                QRCode.toCanvas(qrContainer, googleUrl, {
+                    width: 200,
+                    margin: 2
+                }, function (error) {
+                    if (error) console.error('QR Code generation error:', error);
+                });
+            } else {
+                console.warn('QRCode library not loaded');
+                qrContainer.innerHTML = '<p>QRコード生成中...</p>';
+            }
 
             // Create SNS template
             const snsTemplate = createSNSTemplate(formData, googleUrl);
