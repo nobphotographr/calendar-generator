@@ -193,15 +193,6 @@
             background: #6c757d;
         }
 
-        .qr-code {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .qr-code canvas {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-        }
 
         .sns-template {
             background: white;
@@ -311,8 +302,9 @@
                 </div>
 
                 <div class="result-item">
-                    <h3>📱 QRコード</h3>
-                    <div class="qr-code" id="qrCode"></div>
+                    <h3>🔗 短縮URL</h3>
+                    <div class="url-display" id="shortUrl">短縮URL生成中...</div>
+                    <button class="copy-btn" onclick="copyToClipboard('shortUrl', this)">📋 短縮URLをコピー</button>
                 </div>
 
                 <div class="result-item">
@@ -328,8 +320,6 @@
         </div>
     </div>
 
-    <!-- QR Code Library -->
-    <script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"></script>
 
     <script>
         // Initialize form
@@ -447,33 +437,8 @@
             // Display URL
             document.getElementById('googleUrl').textContent = googleUrl;
 
-            // Generate QR code
-            const qrContainer = document.getElementById('qrCode');
-            qrContainer.innerHTML = '';
-            
-            try {
-                if (typeof QRCode !== 'undefined') {
-                    QRCode.toCanvas(qrContainer, googleUrl, {
-                        width: 200,
-                        margin: 2,
-                        color: {
-                            dark: '#000000',
-                            light: '#ffffff'
-                        }
-                    }, function (error) {
-                        if (error) {
-                            console.error('QR Code generation error:', error);
-                            qrContainer.innerHTML = '<p>QRコード生成エラー</p>';
-                        }
-                    });
-                } else {
-                    console.warn('QRCode library not loaded');
-                    qrContainer.innerHTML = '<div style="width: 200px; height: 200px; border: 2px dashed #ccc; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #666;">QRコード生成中...</div>';
-                }
-            } catch (error) {
-                console.error('QR Code generation error:', error);
-                qrContainer.innerHTML = '<p>QRコード生成エラー</p>';
-            }
+            // Generate short URL
+            shortenUrl(googleUrl);
 
             // Create SNS template
             const snsTemplate = createSNSTemplate(formData, googleUrl);
@@ -487,6 +452,38 @@
                 behavior: 'smooth',
                 block: 'start'
             });
+        }
+
+        // URL shortening function
+        async function shortenUrl(longUrl) {
+            const shortUrlElement = document.getElementById('shortUrl');
+            
+            try {
+                // Using TinyURL API (free, no API key required)
+                const response = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`);
+                
+                if (response.ok) {
+                    const shortUrl = await response.text();
+                    
+                    // Check if the response is a valid URL
+                    if (shortUrl.startsWith('https://tinyurl.com/')) {
+                        shortUrlElement.textContent = shortUrl;
+                        
+                        // Update SNS template with short URL
+                        const snsTemplate = document.getElementById('snsTemplate');
+                        if (snsTemplate) {
+                            snsTemplate.innerHTML = snsTemplate.innerHTML.replace(longUrl, shortUrl);
+                        }
+                    } else {
+                        throw new Error('Invalid response from TinyURL');
+                    }
+                } else {
+                    throw new Error('TinyURL request failed');
+                }
+            } catch (error) {
+                console.error('URL shortening failed:', error);
+                shortUrlElement.textContent = '短縮URL生成に失敗しました。元のURLをご利用ください。';
+            }
         }
 
         function createSNSTemplate(data, calendarUrl) {
