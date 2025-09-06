@@ -194,14 +194,6 @@
         }
 
 
-        .sns-template {
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            font-size: 14px;
-            line-height: 1.6;
-        }
 
         .footer {
             text-align: center;
@@ -296,21 +288,9 @@
 
             <div id="resultContainer" class="result-container">
                 <div class="result-item">
-                    <h3>🔗 Googleカレンダー登録URL</h3>
-                    <div class="url-display" id="googleUrl"></div>
-                    <button class="copy-btn" onclick="copyToClipboard('googleUrl', this)">📋 URLをコピー</button>
-                </div>
-
-                <div class="result-item">
-                    <h3>🔗 短縮URL</h3>
+                    <h3>📅 Googleカレンダー登録URL</h3>
                     <div class="url-display" id="shortUrl">短縮URL生成中...</div>
-                    <button class="copy-btn" onclick="copyToClipboard('shortUrl', this)">📋 短縮URLをコピー</button>
-                </div>
-
-                <div class="result-item">
-                    <h3>📝 SNS投稿用テンプレート</h3>
-                    <div class="sns-template" id="snsTemplate"></div>
-                    <button class="copy-btn" onclick="copyToClipboard('snsTemplate', this)">📋 テンプレートをコピー</button>
+                    <button class="copy-btn" onclick="copyToClipboard('shortUrl', this)">📋 URLをコピー</button>
                 </div>
             </div>
         </div>
@@ -434,15 +414,8 @@
         }
 
         function displayResults(googleUrl, formData) {
-            // Display URL
-            document.getElementById('googleUrl').textContent = googleUrl;
-
             // Generate short URL
             shortenUrl(googleUrl);
-
-            // Create SNS template
-            const snsTemplate = createSNSTemplate(formData, googleUrl);
-            document.getElementById('snsTemplate').innerHTML = snsTemplate;
 
             // Show results
             document.getElementById('resultContainer').classList.add('show');
@@ -468,12 +441,6 @@
                     // Check if the response is a valid URL
                     if (shortUrl.startsWith('https://tinyurl.com/')) {
                         shortUrlElement.textContent = shortUrl;
-                        
-                        // Update SNS template with short URL
-                        const snsTemplate = document.getElementById('snsTemplate');
-                        if (snsTemplate) {
-                            snsTemplate.innerHTML = snsTemplate.innerHTML.replace(longUrl, shortUrl);
-                        }
                     } else {
                         throw new Error('Invalid response from TinyURL');
                     }
@@ -486,24 +453,6 @@
             }
         }
 
-        function createSNSTemplate(data, calendarUrl) {
-            const startDate = new Date(data.startDate);
-            const endDate = new Date(data.endDate);
-            const dateRange = startDate.toLocaleDateString('ja-JP') + 
-                             (startDate.getTime() !== endDate.getTime() ? 
-                              ' - ' + endDate.toLocaleDateString('ja-JP') : '');
-
-            return `📅 ${data.eventTitle}
-
-🗓️ 会期: ${dateRange}
-📍 会場: ${data.venue}
-${data.address ? '🗺️ ' + data.address : ''}
-
-${data.description ? data.description + '\n\n' : ''}カレンダーに追加:
-${calendarUrl}
-
-#写真展 #個展 #東京都写真美術館 #アート`;
-        }
 
         function copyToClipboard(elementId, button) {
             const element = document.getElementById(elementId);
