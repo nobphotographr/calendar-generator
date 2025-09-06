@@ -56,6 +56,6 @@ MIT License
 
 ---
 
-**Made with ❤️ for photographers and exhibition organizers**
+**Made for photographers and exhibition organizers**
 
 写真展・個展の告知をSNSに投稿する際、見た人が簡単にGoogleカレンダーに登録できるURLを生成するシンプルなWebツールです。
