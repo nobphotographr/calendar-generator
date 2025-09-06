@@ -329,7 +329,7 @@
     </div>
 
     <!-- QR Code Library -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"></script>
 
     <script>
         // Initialize form
@@ -451,16 +451,28 @@
             const qrContainer = document.getElementById('qrCode');
             qrContainer.innerHTML = '';
             
-            if (typeof QRCode !== 'undefined') {
-                QRCode.toCanvas(qrContainer, googleUrl, {
-                    width: 200,
-                    margin: 2
-                }, function (error) {
-                    if (error) console.error('QR Code generation error:', error);
-                });
-            } else {
-                console.warn('QRCode library not loaded');
-                qrContainer.innerHTML = '<p>QRコード生成中...</p>';
+            try {
+                if (typeof QRCode !== 'undefined') {
+                    QRCode.toCanvas(qrContainer, googleUrl, {
+                        width: 200,
+                        margin: 2,
+                        color: {
+                            dark: '#000000',
+                            light: '#ffffff'
+                        }
+                    }, function (error) {
+                        if (error) {
+                            console.error('QR Code generation error:', error);
+                            qrContainer.innerHTML = '<p>QRコード生成エラー</p>';
+                        }
+                    });
+                } else {
+                    console.warn('QRCode library not loaded');
+                    qrContainer.innerHTML = '<div style="width: 200px; height: 200px; border: 2px dashed #ccc; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #666;">QRコード生成中...</div>';
+                }
+            } catch (error) {
+                console.error('QR Code generation error:', error);
+                qrContainer.innerHTML = '<p>QRコード生成エラー</p>';
             }
 
             // Create SNS template
