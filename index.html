@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📅 Calendar URL Generator - 展示イベント用カレンダー登録URL生成</title>
+    <title>Calendar URL Generator - 展示イベント用カレンダー登録URL生成</title>
     <meta name="description" content="写真展・個展の告知用Googleカレンダー登録URLを簡単生成。SNS投稿に最適化。">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://nobphotographr.github.io/calendar-generator/">
     <meta property="og:title" content="Calendar URL Generator - 展示イベント用">
     <meta property="og:description" content="写真展・個展の告知用Googleカレンダー登録URLを簡単生成">
-    
+
     <!-- Twitter -->
     <meta property="twitter:card" content="summary">
     <meta property="twitter:url" content="https://nobphotographr.github.io/calendar-generator/">
@@ -19,6 +19,24 @@
     <meta property="twitter:description" content="写真展・個展の告知用Googleカレンダー登録URLを簡単生成">
 
     <style>
+        :root {
+            --bg: #FFFFFF;
+            --bg-subtle: #FAFAFA;
+            --text: #111111;
+            --text-muted: #666666;
+            --border: #E5E5E5;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0A0A0A;
+                --bg-subtle: #141414;
+                --text: #EDEDED;
+                --text-muted: #888888;
+                --border: #2A2A2A;
+            }
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -28,50 +46,46 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Hiragino Sans', 'Noto Sans CJK JP', sans-serif;
             line-height: 1.6;
-            color: #333;
-            background: #f5f7fa;
+            color: var(--text);
+            background: var(--bg);
             min-height: 100vh;
-            padding: 20px;
+            padding: 96px 24px;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 640px;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
         }
 
         .header {
-            background: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 30px 20px;
+            margin-bottom: 64px;
         }
 
         .header h1 {
-            font-size: 2.2em;
+            font-size: 36px;
+            line-height: 1.2;
             margin-bottom: 8px;
-            font-weight: 700;
+            font-weight: 600;
+            letter-spacing: -0.02em;
         }
 
         .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
+            font-size: 16px;
+            color: var(--text-muted);
+            line-height: 1.6;
         }
 
         .form-container {
-            padding: 30px;
+            margin-bottom: 64px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .form-row {
             display: flex;
-            gap: 20px;
+            gap: 24px;
         }
 
         .form-row .form-group {
@@ -81,70 +95,74 @@
         label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
         }
 
         input, textarea, select {
             width: 100%;
             padding: 12px 16px;
-            border: 2px solid #e1e5e9;
-            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
             font-size: 16px;
-            transition: border-color 0.3s, box-shadow 0.3s;
             font-family: inherit;
+            transition: border-color 0.2s;
         }
 
         input:focus, textarea:focus, select:focus {
             outline: none;
-            border-color: #2c3e50;
-            box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+            border-color: var(--text);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: var(--text-muted);
         }
 
         textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 96px;
         }
 
         .checkbox-group {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 8px;
+            margin-top: 8px;
         }
 
         .checkbox-group input[type="checkbox"] {
-            width: auto;
+            width: 16px;
+            height: 16px;
+            accent-color: var(--text);
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-weight: 400;
         }
 
         .generate-btn {
-            background: #2c3e50;
-            color: white;
+            background: var(--text);
+            color: var(--bg);
             border: none;
-            padding: 14px 28px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.3s;
+            transition: opacity 0.2s;
             width: 100%;
         }
 
         .generate-btn:hover {
-            background: #34495e;
-            transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .generate-btn:active {
-            transform: translateY(0);
+            opacity: 0.8;
         }
 
         .result-container {
-            margin-top: 25px;
-            padding: 20px;
-            background: #f8f9fb;
-            border-radius: 12px;
+            margin-top: 48px;
+            padding-top: 48px;
+            border-top: 1px solid var(--border);
             display: none;
         }
 
@@ -153,85 +171,79 @@
         }
 
         .result-item {
-            margin-bottom: 15px;
+            margin-bottom: 16px;
         }
 
         .result-item h3 {
-            color: #555;
-            margin-bottom: 10px;
-            font-size: 1.1em;
+            color: var(--text);
+            margin-bottom: 16px;
+            font-size: 14px;
+            font-weight: 500;
         }
 
         .url-display {
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            font-family: 'Courier New', monospace;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            padding: 16px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', monospace;
             font-size: 14px;
             word-break: break-all;
-            position: relative;
+            color: var(--text);
         }
 
         .copy-btn {
-            background: #28a745;
-            color: white;
+            background: var(--text);
+            color: var(--bg);
             border: none;
             padding: 8px 16px;
-            border-radius: 6px;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 16px;
             font-size: 14px;
-            transition: background 0.2s;
+            font-weight: 500;
+            transition: opacity 0.2s;
         }
 
         .copy-btn:hover {
-            background: #218838;
+            opacity: 0.8;
         }
 
         .copy-btn.copied {
-            background: #6c757d;
+            opacity: 0.6;
         }
 
-
-
         .footer {
-            text-align: center;
-            padding: 20px;
-            color: #666;
+            padding-top: 48px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
             font-size: 14px;
         }
 
         @media (max-width: 768px) {
+            body {
+                padding: 64px 16px;
+            }
+
             .form-row {
                 flex-direction: column;
                 gap: 0;
             }
-            
+
             .header h1 {
-                font-size: 1.8em;
+                font-size: 24px;
             }
-            
+
             .header {
-                padding: 20px 15px;
-            }
-            
-            .form-container {
-                padding: 20px;
-            }
-            
-            .form-group {
-                margin-bottom: 15px;
+                margin-bottom: 48px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>📅 Calendar URL Generator</h1>
-            <p>写真展・個展の告知用Googleカレンダー登録URLを簡単生成</p>
-        </div>
+        <header class="header">
+            <h1>Calendar URL Generator</h1>
+            <p>写真展・個展の告知用Googleカレンダー登録URLを生成</p>
+        </header>
 
         <div class="form-container">
             <form id="calendarForm">
@@ -291,72 +303,63 @@
                     <input type="url" id="announceUrl" name="announceUrl" placeholder="例: https://example.com/exhibition">
                 </div>
 
-                <button type="submit" class="generate-btn">📅 カレンダーURL生成</button>
+                <button type="submit" class="generate-btn">カレンダーURL生成</button>
             </form>
 
             <div id="resultContainer" class="result-container">
                 <div class="result-item">
-                    <h3>📅 Googleカレンダー登録URL</h3>
+                    <h3>Googleカレンダー登録URL</h3>
                     <div class="url-display" id="shortUrl">短縮URL生成中...</div>
-                    <button class="copy-btn" onclick="copyToClipboard('shortUrl', this)">📋 URLをコピー</button>
+                    <button class="copy-btn" onclick="copyToClipboard('shortUrl', this)">URLをコピー</button>
                 </div>
             </div>
         </div>
 
-        <div class="footer">
-            <p>© 2025 Calendar URL Generator | Made for photographers</p>
-        </div>
+        <footer class="footer">
+            <p>データはブラウザ上でのみ処理され、サーバーには保存されません</p>
+        </footer>
     </div>
 
-
     <script>
-        // Initialize form
         document.addEventListener('DOMContentLoaded', function() {
-            // Set default dates (today and tomorrow)
             const today = new Date();
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 7); // Default to week-long exhibition
+            const nextWeek = new Date(today);
+            nextWeek.setDate(nextWeek.getDate() + 7);
 
             document.getElementById('startDate').value = today.toISOString().split('T')[0];
-            document.getElementById('endDate').value = tomorrow.toISOString().split('T')[0];
+            document.getElementById('endDate').value = nextWeek.toISOString().split('T')[0];
 
-            // Toggle time inputs
             document.getElementById('isAllDay').addEventListener('change', function() {
                 const timeInputs = document.getElementById('timeInputs');
                 timeInputs.style.display = this.checked ? 'none' : 'block';
             });
         });
 
-        // Form submission
         document.getElementById('calendarForm').addEventListener('submit', function(e) {
             e.preventDefault();
             generateCalendarUrl();
         });
 
         function generateCalendarUrl() {
-            console.log('generateCalendarUrl called');
             const formData = new FormData(document.getElementById('calendarForm'));
             const data = Object.fromEntries(formData);
-            console.log('Form data:', data);
 
-            // Validate dates
             const startDate = new Date(data.startDate);
             const endDate = new Date(data.endDate);
-            
+
             if (endDate < startDate) {
                 alert('終了日は開始日以降に設定してください');
                 return;
             }
 
             let googleUrl;
-            
+
             if (data.isAllDay === 'on') {
-                // All-day event: use date format and add +1 day to end date
                 const startDateStr = data.startDate.replace(/-/g, '');
                 const endDateObj = new Date(endDate);
                 endDateObj.setDate(endDateObj.getDate() + 1);
                 const endDateStr = endDateObj.toISOString().split('T')[0].replace(/-/g, '');
-                
+
                 googleUrl = createGoogleCalendarUrl({
                     title: data.eventTitle,
                     startDate: startDateStr,
@@ -368,17 +371,15 @@
                     announceUrl: data.announceUrl || ''
                 });
             } else {
-                // Timed event: convert JST to UTC
                 const startDateTime = new Date(data.startDate + 'T' + data.startTime);
                 const endDateTime = new Date(data.endDate + 'T' + data.endTime);
-                
-                // Convert JST to UTC (subtract 9 hours)
+
                 const startUTC = new Date(startDateTime.getTime() - (9 * 60 * 60 * 1000));
                 const endUTC = new Date(endDateTime.getTime() - (9 * 60 * 60 * 1000));
-                
+
                 const startDateTimeStr = startUTC.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
                 const endDateTimeStr = endUTC.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
-                
+
                 googleUrl = createGoogleCalendarUrl({
                     title: data.eventTitle,
                     startDate: startDateTimeStr,
@@ -391,14 +392,12 @@
                 });
             }
 
-            // Display results
-            console.log('Generated URL:', googleUrl);
-            displayResults(googleUrl, data);
+            displayResults(googleUrl);
         }
 
         function createGoogleCalendarUrl(eventData) {
             const location = eventData.address || eventData.venue;
-            
+
             let details = '';
             if (eventData.venue && eventData.address) {
                 details += `会場: ${eventData.venue}\n`;
@@ -421,32 +420,24 @@
             return `https://calendar.google.com/calendar/render?${params.toString()}`;
         }
 
-        function displayResults(googleUrl, formData) {
-            // Generate short URL
+        function displayResults(googleUrl) {
             shortenUrl(googleUrl);
-
-            // Show results
             document.getElementById('resultContainer').classList.add('show');
-            
-            // Scroll to results
-            document.getElementById('resultContainer').scrollIntoView({ 
+            document.getElementById('resultContainer').scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
             });
         }
 
-        // URL shortening function
         async function shortenUrl(longUrl) {
             const shortUrlElement = document.getElementById('shortUrl');
-            
+
             try {
-                // Using TinyURL API (free, no API key required)
                 const response = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`);
-                
+
                 if (response.ok) {
                     const shortUrl = await response.text();
-                    
-                    // Check if the response is a valid URL
+
                     if (shortUrl.startsWith('https://tinyurl.com/')) {
                         shortUrlElement.textContent = shortUrl;
                     } else {
@@ -457,37 +448,35 @@
                 }
             } catch (error) {
                 console.error('URL shortening failed:', error);
-                shortUrlElement.textContent = '短縮URL生成に失敗しました。元のURLをご利用ください。';
+                shortUrlElement.textContent = '短縮URL生成に失敗しました';
             }
         }
-
 
         function copyToClipboard(elementId, button) {
             const element = document.getElementById(elementId);
             const text = element.textContent || element.innerHTML;
-            
+
             navigator.clipboard.writeText(text).then(function() {
                 const originalText = button.textContent;
-                button.textContent = '✅ コピーしました!';
+                button.textContent = 'コピーしました';
                 button.classList.add('copied');
-                
+
                 setTimeout(() => {
                     button.textContent = originalText;
                     button.classList.remove('copied');
                 }, 2000);
             }).catch(function(err) {
                 console.error('コピーに失敗:', err);
-                // Fallback for older browsers
                 const range = document.createRange();
                 range.selectNode(element);
                 window.getSelection().removeAllRanges();
                 window.getSelection().addRange(range);
                 document.execCommand('copy');
                 window.getSelection().removeAllRanges();
-                
-                button.textContent = '✅ コピーしました!';
+
+                button.textContent = 'コピーしました';
                 setTimeout(() => {
-                    button.textContent = '📋 コピー';
+                    button.textContent = 'URLをコピー';
                 }, 2000);
             });
         }
